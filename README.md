@@ -70,12 +70,26 @@ To empower people to take small eco-friendly actions that collectively create a 
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React 18 with TypeScript
+### Frontend
+
+- **Framework:** React 18 with TypeScript
 - **Styling:** Tailwind CSS 4
-- **Authentication:** Supabase Auth
-- **Backend:** Supabase (PostgreSQL)
 - **Icons:** Lucide React
-- **Build Tool:** React Scripts
+- **Build Tool:** React Scripts (Create React App)
+
+### Backend & Database
+
+- **Backend as a Service:** Supabase
+- **Database:** PostgreSQL (via Supabase)
+- **Authentication:** Supabase Auth
+- **Real-time Updates:** Supabase Realtime
+
+### Key Libraries & Tools
+
+- **React Router:** For navigation and routing
+- **TypeScript:** For type safety and better developer experience
+- **PostCSS:** CSS processing with Tailwind
+- **ESLint & Prettier:** Code quality and formatting
 
 ---
 
@@ -83,16 +97,17 @@ To empower people to take small eco-friendly actions that collectively create a 
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm or yarn
-- Supabase account (for authentication and database)
+- **Node.js:** v14 or higher (v18+ recommended)
+- **npm:** v6 or higher (comes with Node.js)
+- **Supabase Account:** For authentication and database ([Sign up here](https://supabase.com))
+- **Git:** For cloning the repository
 
 ### Installation Steps
 
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/your-username/TerraSave.git
    cd TerraSave
    ```
 
@@ -102,24 +117,46 @@ To empower people to take small eco-friendly actions that collectively create a 
    npm install
    ```
 
-3. **Configure Supabase**
-   - Copy `.env.example` to `.env`
-   - Add your Supabase credentials:
-     ```
-     REACT_APP_SUPABASE_URL=your_supabase_url_here
-     REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key_here
-     ```
+   This will install all required packages including React, TypeScript, Tailwind CSS, and Supabase.
 
-4. **Run the development server**
+3. **Configure Environment Variables**
+   - Create a `.env` file in the root directory:
+     ```bash
+     cp .env.example .env
+     ```
+   - Add your Supabase credentials to `.env`:
+     ```env
+     REACT_APP_SUPABASE_URL=your_supabase_project_url
+     REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+     ```
+   - Get these credentials from your [Supabase Dashboard](https://app.supabase.com) → Project Settings → API
+
+4. **Set up Supabase Database**
+   - Create the required tables in your Supabase project
+   - Run the SQL schema (if provided in `database/schema.sql`)
+   - Configure authentication providers in Supabase Dashboard
+
+5. **Run the development server**
 
    ```bash
    npm start
    ```
 
-5. **Build for production**
+   The application will open at [http://localhost:3000](http://localhost:3000)
+
+6. **Build for production**
+
    ```bash
    npm run build
    ```
+
+   The optimized build will be created in the `build/` directory.
+
+### Troubleshooting
+
+- **Port already in use:** If port 3000 is busy, the app will prompt to use another port
+- **Environment variables not loading:** Ensure `.env` is in the root directory and restart the dev server
+- **Supabase connection errors:** Verify your Supabase URL and anon key are correct
 
 ---
 
@@ -163,14 +200,26 @@ TerraSave/
 
 ---
 
+## 👥 Team Members
+
+This project was developed by:
+
+- **Jithmi Pranamya Wickramasinghe**
+- **Kithmi Githara Beddage**
+- **Hiruni Yashoda Sethmini**
+- **Nithini Nethma Kasthuriarachchi**
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome!
 
 1. Fork the repository
-2. Create a new branch
-3. Commit your changes
-4. Open a pull request
+2. Create a new branch (`git checkout -b feature/your-feature-name`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/your-feature-name`)
+5. Open a pull request
 
 ---
 
