@@ -160,37 +160,6 @@ To empower people to take small eco-friendly actions that collectively create a 
 
 ---
 
-## 📁 Project Structure
-
-```
-TerraSave/
-├── public/
-│   ├── index.html
-│   └── image/
-│       └── logo.png
-├── src/
-│   ├── app.tsx              # Main App component
-│   ├── index.tsx            # Entry point
-│   ├── index.css            # Global styles
-│   ├── components/
-│   │   ├── AuthContext.tsx  # Authentication context
-│   │   └── index.ts
-│   ├── lib/
-│   │   └── supabase.ts      # Supabase client config
-│   ├── scenes/
-│   │   ├── SignIn.tsx       # Sign in page
-│   │   └── SignUp.tsx       # Sign up page
-│   └── types/
-│       └── index.ts         # TypeScript type definitions
-├── .env                     # Environment variables (not in git)
-├── .env.example             # Environment template
-├── package.json
-├── tsconfig.json
-└── README.md
-```
-
----
-
 ## 🎨 UI/UX Highlights
 
 - Nature-inspired color palette
