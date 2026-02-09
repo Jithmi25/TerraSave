@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 import { GameLevel1 } from './GameLevel1';
+import { type CharacterChoice } from './CharacterSelect';
 
 interface LevelDisplayProps {
   selectedTree: string;
+  selectedCharacter: CharacterChoice;
   landId: string;
   onBack: () => void;
 }
 
-export function LevelDisplay({ selectedTree, landId, onBack }: LevelDisplayProps) {
+export function LevelDisplay({ selectedTree, selectedCharacter, landId, onBack }: LevelDisplayProps) {
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [playingLevel, setPlayingLevel] = useState<number | null>(null);
   const [quietMode, setQuietMode] = useState(false);
   const totalLevels = 20;
+  const mascotGif = selectedCharacter === 'girl' ? '/image/mscot girl.gif' : '/image/mascot boy.gif';
 
   const handleLevelClick = (level: number) => {
     if (level === currentLevel && !completedLevels.includes(level)) {
@@ -27,6 +30,7 @@ export function LevelDisplay({ selectedTree, landId, onBack }: LevelDisplayProps
     return (
       <GameLevel1
         quietMode={quietMode}
+        selectedCharacter={selectedCharacter}
         onLevelComplete={() => {
           setCompletedLevels([...completedLevels, 1]);
           if (1 < totalLevels) {
@@ -187,6 +191,15 @@ export function LevelDisplay({ selectedTree, landId, onBack }: LevelDisplayProps
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mascot GIF at bottom */}
+      <div className="fixed bottom-4 right-4 z-20">
+        <img
+          src={mascotGif}
+          alt="Mascot"
+          className="w-32 h-32 object-contain drop-shadow-2xl"
+        />
       </div>
     </div>
   );

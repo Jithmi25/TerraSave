@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
+import { type CharacterChoice } from './CharacterSelect';
 
 interface GameLevel1Props {
   onLevelComplete: () => void;
   quietMode?: boolean;
   onBack?: () => void;
+  selectedCharacter?: CharacterChoice;
 }
 
 type Plant = '🌱' | '🌿' | '🍀' | '🌾' | '🌳' | null;
@@ -21,7 +23,7 @@ const formatTime = (seconds: number) => {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
 
-export function GameLevel1({ onLevelComplete, quietMode = false, onBack }: GameLevel1Props) {
+export function GameLevel1({ onLevelComplete, quietMode = false, onBack, selectedCharacter }: GameLevel1Props) {
   const [grid, setGrid] = useState<Plant[][]>([]);
   const [selectedCell, setSelectedCell] = useState<[number, number] | null>(null);
   const [score, setScore] = useState(0);
@@ -31,6 +33,7 @@ export function GameLevel1({ onLevelComplete, quietMode = false, onBack }: GameL
   const [won, setWon] = useState(false);
   const [timeUp, setTimeUp] = useState(false);
   const [isQuiet, setIsQuiet] = useState(quietMode);
+  const mascotGif = selectedCharacter === 'girl' ? '/image/mscot girl.gif' : '/image/mascot boy.gif';
 
   // Initialize grid
   useEffect(() => {
@@ -360,6 +363,17 @@ export function GameLevel1({ onLevelComplete, quietMode = false, onBack }: GameL
           </div>
         </div>
       </div>
+
+      {/* Mascot GIF at bottom */}
+      {selectedCharacter && (
+        <div className="fixed bottom-4 right-4 z-20">
+          <img
+            src={mascotGif}
+            alt="Mascot"
+            className="w-32 h-32 object-contain drop-shadow-2xl"
+          />
+        </div>
+      )}
     </div>
   );
 }

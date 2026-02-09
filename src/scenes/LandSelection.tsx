@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { type CharacterChoice } from './CharacterSelect';
 
 interface LandSelectionProps {
   selectedTree: string;
+  selectedCharacter: CharacterChoice;
   onSelectLand: (landId: string) => void;
   onBack: () => void;
 }
@@ -30,8 +32,9 @@ const projects = [
   },
 ];
 
-export function LandSelection({ selectedTree, onSelectLand, onBack }: LandSelectionProps) {
+export function LandSelection({ selectedTree, selectedCharacter, onSelectLand, onBack }: LandSelectionProps) {
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const mascotGif = selectedCharacter === 'girl' ? '/image/mscot girl.gif' : '/image/mascot boy.gif';
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -106,6 +109,15 @@ export function LandSelection({ selectedTree, onSelectLand, onBack }: LandSelect
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Mascot GIF at bottom */}
+      <div className="fixed bottom-4 right-4 z-20">
+        <img
+          src={mascotGif}
+          alt="Mascot"
+          className="w-32 h-32 object-contain drop-shadow-2xl"
+        />
       </div>
     </div>
   );

@@ -37,17 +37,17 @@ export function SignIn({ onSwitchToSignUp }: { onSwitchToSignUp: () => void }) {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-emerald-50 to-teal-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="flex flex-col items-center mb-6">
-            <img src="/image/logo.png" alt="TerraSave Logo" className="h-14 mb-4" />
-            <h2 className="text-2xl font-semibold text-gray-900">Log in</h2>
-            <p className="text-sm text-gray-600 mt-1">
-              Welcome back! <br />continue your impact
-            </p>
-          </div>
+      <div className="w-full max-w-4xl">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="grid md:grid-cols-2">
+            {/* Left: Form */}
+            <div className="p-8">
+              <h2 className="text-2xl font-semibold text-gray-900 text-center">Log in</h2>
+              <p className="text-sm text-gray-800 mt-1 mb-6">
+                Welcome back ! 
+              </p>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email
@@ -111,22 +111,32 @@ export function SignIn({ onSwitchToSignUp }: { onSwitchToSignUp: () => void }) {
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               {loading ? 'Signing In...' : 'Log In'}
             </button>
-          </form>
+              </form>
 
-          <p className="text-center text-sm text-gray-600 mt-6">
-            Don&apos;t have an account?{' '}
-            <button
-              onClick={onSwitchToSignUp}
-              className="text-emerald-600 hover:text-emerald-700 font-semibold transition"
-            >
-              Sign Up
-            </button>
-          </p>
+              <p className="text-center text-sm text-gray-600 mt-6">
+                Don&apos;t have an account?{' '}
+                <button
+                  onClick={onSwitchToSignUp}
+                  className="text-emerald-600 hover:text-emerald-700 font-semibold transition"
+                >
+                  Sign Up
+                </button>
+              </p>
+            </div>
+
+            {/* Right: Logo */}
+            <div className="bg-linear-to-br from-emerald-600 to-teal-600 text-white p-8 flex flex-col items-center justify-center text-center">
+              <img src="/image/logo.png" alt="TerraSave Logo" className="h-30 mb-4" />
+              <h3 className="text-2xl font-semibold">TerraSave</h3>
+              <p className="text-white/90 mt-2">
+                Grow your forest, one level at a time.
+              </p>
+              <p className="text-white/80 text-sm mt-4">
+                Your forest is waiting. Let&apos;s grow together.
+              </p>
+            </div>
+          </div>
         </div>
-
-        <p className="text-center text-xs text-gray-600 mt-6">
-          Your forest is waiting. Let&apos;s grow together.
-        </p>
       </div>
     </div>
   );

@@ -52,17 +52,28 @@ export function SignUp({ onSwitchToSignIn }: { onSwitchToSignIn: () => void }) {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-emerald-50 to-teal-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="flex justify-center mb-8">
-            <img src="/image/logo.png" alt="TerraSave Logo" className="h-16" />
-          </div>
+      <div className="w-full max-w-4xl">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="grid md:grid-cols-2">
+            {/* Left: Logo */}
+            <div className="bg-linear-to-br from-emerald-600 to-teal-600 text-white p-8 flex flex-col items-center justify-center text-center">
+              <img src="/image/logo.png" alt="TerraSave Logo" className="h-30 mb-4" />
+              <h3 className="text-2xl font-semibold">TerraSave</h3>
+              <p className="text-white/90 mt-2">
+                Join the movement and grow a greener future.
+              </p>
+              <p className="text-white/80 text-sm mt-4">
+                By signing up, you agree to plant your first digital tree and grow with TerraSave.
+              </p>
+            </div>
 
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 text-center">
-            Join the Movement
-          </h2>
+            {/* Right: Form */}
+            <div className="p-8">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6 text-center">
+                Join the Movement
+              </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 I am a...
@@ -79,7 +90,7 @@ export function SignUp({ onSwitchToSignIn }: { onSwitchToSignIn: () => void }) {
                         : 'border-gray-300 bg-white text-gray-700 hover:border-emerald-300'
                     }`}
                   >
-                    {type === 'player' ? '🌱 Player' : '🏢 NGO'}
+                    {type === 'player' ? '🌱 Player' : '🏢 Partners'}
                   </button>
                 ))}
               </div>
@@ -156,22 +167,20 @@ export function SignUp({ onSwitchToSignIn }: { onSwitchToSignIn: () => void }) {
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
-          </form>
+              </form>
 
-          <p className="text-center text-sm text-gray-600 mt-6">
-            Already have an account?{' '}
-            <button
-              onClick={onSwitchToSignIn}
-              className="text-emerald-600 hover:text-emerald-700 font-semibold transition"
-            >
-              Sign In
-            </button>
-          </p>
+              <p className="text-center text-sm text-gray-600 mt-6">
+                Already have an account?{' '}
+                <button
+                  onClick={onSwitchToSignIn}
+                  className="text-emerald-600 hover:text-emerald-700 font-semibold transition"
+                >
+                  Sign In
+                </button>
+              </p>
+            </div>
+          </div>
         </div>
-
-        <p className="text-center text-xs text-gray-600 mt-6">
-          By signing up, you agree to plant your first digital tree and grow with TerraSave.
-        </p>
       </div>
     </div>
   );

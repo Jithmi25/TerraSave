@@ -126,7 +126,7 @@ export function CharacterSelect({ onPlay }: CharacterSelectProps) {
               }`}>
                 <div className="relative">
                   <img
-                    src="/image/mascot_boy.png"
+                    src="/image/mascot boy.gif"
                     alt="Boy Character"
                     className="w-full h-auto drop-shadow-2xl"
                   />
@@ -161,7 +161,7 @@ export function CharacterSelect({ onPlay }: CharacterSelectProps) {
               }`}>
                 <div className="relative">
                   <img
-                    src="/image/mascot_girl.png"
+                    src="/image/mscot girl.gif"
                     alt="Girl Character"
                     className="w-full h-auto drop-shadow-2xl"
                   />

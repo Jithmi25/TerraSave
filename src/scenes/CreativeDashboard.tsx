@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bell, HelpCircle, Award, Trophy, Info, Share2, Download, Copy, Users } from 'lucide-react';
+import { Bell, HelpCircle, Award, Trophy, Info, Share2, Download, Copy, Users, Settings } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
 import type { CharacterChoice } from './CharacterSelect';
 
@@ -23,9 +23,11 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
   const [showAbout, setShowAbout] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showCertificate, setShowCertificate] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [inviteLink] = useState('https://terrasave.com/invite?ref=' + user?.email);
   const [copySuccess, setCopySuccess] = useState(false);
   const characterImage = character === 'boy' ? '/image/mascot_boy.png' : '/image/mascot_girl.png';
+  const mascotGif = character === 'girl' ? '/image/mscot girl.gif' : '/image/mascot boy.gif';
 
   const handleCopyInviteLink = () => {
     navigator.clipboard.writeText(inviteLink);
@@ -50,6 +52,8 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
   const notifications = [
     { id: 1, message: 'Welcome to TerraSave! Start your journey by planting your first tree.', time: 'Just now', read: false },
     { id: 2, message: 'Complete Level 1 to unlock new achievements!', time: '5 min ago', read: true },
+    { id: 3, message: '🎉 Congratulations! You won new batch. Claim it now.', time: '2 min ago', read: false },
+    { id: 4, message: '🌍 Congratulations! Your plant successfully planted in Europe Plant-for-the-Planet project, 2026.01.02', time: '1 min ago', read: false },
   ];
 
   const leaderboardData = [
@@ -83,7 +87,7 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
           {/* Header */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
             <div>
-              <h1 className="text-4xl font-bold text-white drop-shadow-lg">Creative Dashboard</h1>
+              <h1 className="text-4xl font-bold text-white drop-shadow-lg">Dashboard</h1>
               <p className="text-white/90 mt-2">
                 Welcome, {user?.email || 'Explorer'} — your journey starts here.
               </p>
@@ -125,6 +129,12 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
                 className="px-4 py-2 rounded-full bg-white/20 text-white backdrop-blur-md border border-white/30 hover:bg-white/30 transition flex items-center gap-2"
               >
                 <Info className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => setShowSettings(!showSettings)}
+                className="px-4 py-2 rounded-full bg-white/20 text-white backdrop-blur-md border border-white/30 hover:bg-white/30 transition flex items-center gap-2"
+              >
+                <Settings className="w-5 h-5" />
               </button>
               <button
                 onClick={onOpenProfile}
@@ -295,6 +305,83 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
                 <p>
                   📜 <strong>Get Certified:</strong> Complete your journey and receive an official plant certificate recognizing your contribution to the planet.
                 </p>
+              </div>
+            </div>
+          )}
+
+          {/* Settings Panel */}
+          {showSettings && (
+            <div className="mb-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/30">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Settings className="w-6 h-6" />
+                  Settings
+                </h3>
+                <button
+                  onClick={() => setShowSettings(false)}
+                  className="text-white/70 hover:text-white text-sm"
+                >
+                  Close
+                </button>
+              </div>
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h4 className="text-white font-semibold">Sound & Audio</h4>
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                    <span className="text-white/90">Music Volume</span>
+                    <input type="range" min="0" max="100" defaultValue="70" className="w-32" />
+                  </div>
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                    <span className="text-white/90">Sound Effects</span>
+                    <input type="range" min="0" max="100" defaultValue="80" className="w-32" />
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <h4 className="text-white font-semibold">Display</h4>
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                    <span className="text-white/90">Brightness</span>
+                    <input type="range" min="0" max="100" defaultValue="100" className="w-32" />
+                  </div>
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                    <span className="text-white/90">Screen Shake</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" defaultChecked className="sr-only peer" />
+                      <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-white font-semibold">Notifications</h4>
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                    <span className="text-white/90">Push Notifications</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" defaultChecked className="sr-only peer" />
+                      <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                    </label>
+                  </div>
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                    <span className="text-white/90">Email Updates</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" defaultChecked className="sr-only peer" />
+                      <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-white font-semibold">Language</h4>
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                    <span className="text-white/90">Select Language</span>
+                    <select className="bg-white/10 text-white px-4 py-2 rounded-lg border border-white/30">
+                      <option value="en">English</option>
+                      <option value="es">Español</option>
+                      <option value="fr">Français</option>
+                      <option value="de">Deutsch</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -494,7 +581,7 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
                 <img
                   src={characterImage}
                   alt="Guide"
-                  className="w-64 md:w-72 drop-shadow-2xl animate-bounce"
+                  className="w-64 md:w-72 drop-shadow-2xl"
                 />
                 <div className="mt-6 text-center text-white/90">
                   <p className="text-lg font-medium">"Pick a tree to start your forest!"</p>
@@ -549,6 +636,15 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mascot GIF at bottom */}
+      <div className="fixed bottom-4 right-4 z-20">
+        <img
+          src={mascotGif}
+          alt="Mascot"
+          className="w-32 h-32 object-contain drop-shadow-2xl"
+        />
       </div>
     </div>
   );

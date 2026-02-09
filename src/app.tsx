@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AuthProvider, useAuth } from './components/AuthContext';
+import { HomePage } from './scenes/HomePage';
 import { SignIn } from './scenes/SignIn';
 import { SignUp } from './scenes/SignUp';
 import { CharacterSelect, type CharacterChoice } from './scenes/CharacterSelect';
@@ -13,7 +14,7 @@ import { Loader2 } from 'lucide-react';
 
 function AppContent() {
   const { user, loading } = useAuth();
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [authView, setAuthView] = useState<'home' | 'signin' | 'signup'>('home');
   const [selectedCharacter, setSelectedCharacter] = useState<CharacterChoice | null>(null);
   const [selectedTreeImage, setSelectedTreeImage] = useState<string>('');
   const [selectedLand, setSelectedLand] = useState<string>('');
@@ -31,11 +32,18 @@ function AppContent() {
   }
 
   if (!user) {
-    return showSignUp ? (
-      <SignUp onSwitchToSignIn={() => setShowSignUp(false)} />
-    ) : (
-      <SignIn onSwitchToSignUp={() => setShowSignUp(true)} />
-    );
+    if (authView === 'signup') {
+      return <SignUp onSwitchToSignIn={() => setAuthView('signin')} />;
+    } else if (authView === 'signin') {
+      return <SignIn onSwitchToSignUp={() => setAuthView('signup')} />;
+    } else {
+      return (
+        <HomePage
+          onSignIn={() => setAuthView('signin')}
+          onSignUp={() => setAuthView('signup')}
+        />
+      );
+    }
   }
 
   // Route to NGO dashboard
@@ -61,6 +69,7 @@ function AppContent() {
     return (
       <LandSelection
         selectedTree={selectedTreeImage}
+        selectedCharacter={selectedCharacter}
         onSelectLand={(landId) => {
           setSelectedLand(landId);
           setView('levels');
@@ -74,6 +83,7 @@ function AppContent() {
     return (
       <LevelDisplay
         selectedTree={selectedTreeImage}
+        selectedCharacter={selectedCharacter}
         landId={selectedLand}
         onBack={() => setView('land')}
       />
