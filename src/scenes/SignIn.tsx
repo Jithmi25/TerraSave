@@ -43,7 +43,7 @@ export function SignIn({ onSwitchToSignUp }: { onSwitchToSignUp: () => void }) {
             <img src="/image/logo.png" alt="TerraSave Logo" className="h-14 mb-4" />
             <h2 className="text-2xl font-semibold text-gray-900">Log in</h2>
             <p className="text-sm text-gray-600 mt-1">
-              Welcome back — continue your impact
+              Welcome back! <br />continue your impact
             </p>
           </div>
 
