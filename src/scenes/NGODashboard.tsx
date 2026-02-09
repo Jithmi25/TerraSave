@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Users, Settings, User, Play, Pause, Trash2, MapPin, Bell, Upload, CheckCircle, Clock, LogOut } from 'lucide-react';
+import { Plus, Settings, User, Play, Pause, MapPin, Bell, Upload, CheckCircle, Clock, LogOut } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
 
 interface Project {
@@ -7,9 +7,10 @@ interface Project {
   name: string;
   location: string;
   description: string;
-  status: 'active' | 'paused' | 'pending';
+  status: 'active' | 'completed' | 'pending';
   playerCount: number;
   treesPlanted: number;
+  treesTarget: number;
   createdAt: string;
   verificationDoc?: string;
 }
@@ -41,6 +42,7 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
       status: 'active',
       playerCount: 1250,
       treesPlanted: 45000,
+      treesTarget: 100000,
       createdAt: '2024-01-15',
     },
     {
@@ -51,6 +53,7 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
       status: 'active',
       playerCount: 890,
       treesPlanted: 32000,
+      treesTarget: 75000,
       createdAt: '2024-03-20',
     },
     {
@@ -61,8 +64,20 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
       status: 'pending',
       playerCount: 0,
       treesPlanted: 0,
+      treesTarget: 15000,
       createdAt: '2024-02-08',
       verificationDoc: 'registration_certificate.pdf',
+    },
+    {
+      id: '4',
+      name: 'Coastal Mangrove Revival',
+      location: 'Philippines',
+      description: 'Restoring mangroves to protect coastlines and boost biodiversity',
+      status: 'completed',
+      playerCount: 620,
+      treesPlanted: 28000,
+      treesTarget: 40000,
+      createdAt: '2024-04-05',
     },
   ]);
   const [notifications, setNotifications] = useState<Notification[]>([
@@ -85,11 +100,18 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
     name: '',
     location: '',
     description: '',
+    treesTarget: '',
     verificationDoc: null as File | null,
   });
 
   const handleAddProject = () => {
-    if (!newProject.name || !newProject.location || !newProject.description || !newProject.verificationDoc) {
+    if (
+      !newProject.name ||
+      !newProject.location ||
+      !newProject.description ||
+      !newProject.treesTarget ||
+      !newProject.verificationDoc
+    ) {
       alert('Please fill all fields and upload verification document');
       return;
     }
@@ -102,6 +124,7 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
       status: 'pending',
       playerCount: 0,
       treesPlanted: 0,
+      treesTarget: Number(newProject.treesTarget),
       createdAt: new Date().toISOString().split('T')[0],
       verificationDoc: newProject.verificationDoc.name,
     };
@@ -118,7 +141,7 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
     };
     setNotifications([notification, ...notifications]);
 
-    setNewProject({ name: '', location: '', description: '', verificationDoc: null });
+    setNewProject({ name: '', location: '', description: '', treesTarget: '', verificationDoc: null });
     setShowAddProject(false);
     setShowSuccessMessage(true);
     
@@ -134,16 +157,11 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
   const toggleProjectStatus = (id: string) => {
     setProjects(
       projects.map((p) =>
-        p.id === id ? { ...p, status: p.status === 'active' ? 'paused' : 'active' } : p
+        p.id === id ? { ...p, status: p.status === 'active' ? 'completed' : 'active' } : p
       )
     );
   };
-
-  const deleteProject = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this project?')) {
-      setProjects(projects.filter((p) => p.id !== id));
-    }
-  };
+  const formatCount = (count: number) => count.toString().padStart(2, '0');
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -173,7 +191,7 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
                   🏢
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-white">NGO Dashboard</h1>
+                  <h1 className="text-xl font-bold text-white">HYSNGO Dashboard</h1>
                   <p className="text-sm text-white/70">{ngoEmail}</p>
                 </div>
               </div>
@@ -305,7 +323,7 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
                 <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/30 text-center">
                   <p className="text-white/70 text-sm mb-3">Active Projects</p>
                   <p className="text-4xl font-bold text-white">
-                    {projects.filter((p) => p.status === 'active').length}
+                    {formatCount(projects.filter((p) => p.status === 'active').length)}
                   </p>
                   <p className="text-xs text-white/50 mt-2">Live projects</p>
                 </div>
@@ -313,7 +331,7 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
                 <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/30 text-center">
                   <p className="text-white/70 text-sm mb-3">Pending Projects</p>
                   <p className="text-4xl font-bold text-white">
-                    {projects.filter((p) => p.status === 'pending').length}
+                    {formatCount(projects.filter((p) => p.status === 'pending').length)}
                   </p>
                   <p className="text-xs text-white/50 mt-2">Awaiting approval</p>
                 </div>
@@ -327,11 +345,11 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
                 </div>
 
                 <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/30 text-center">
-                  <p className="text-white/70 text-sm mb-3">Paused Projects</p>
+                  <p className="text-white/70 text-sm mb-3">Completed Projects</p>
                   <p className="text-4xl font-bold text-white">
-                    {projects.filter((p) => p.status === 'paused').length}
+                    {formatCount(projects.filter((p) => p.status === 'completed').length)}
                   </p>
-                  <p className="text-xs text-white/50 mt-2">Temporarily paused</p>
+                  <p className="text-xs text-white/50 mt-2">Successfully delivered</p>
                 </div>
               </div>
 
@@ -391,6 +409,21 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
                           rows={3}
                           placeholder="Describe your project..."
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Number of Trees in Project
+                        </label>
+                        <input
+                          type="number"
+                          min={1}
+                          value={newProject.treesTarget}
+                          onChange={(e) =>
+                            setNewProject({ ...newProject, treesTarget: e.target.value })
+                          }
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                          placeholder="e.g., 25000"
                         />
                       </div>
                       <div>
@@ -464,12 +497,16 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
                             className={`px-3 py-1 rounded-full text-xs font-semibold ${
                               project.status === 'active'
                                 ? 'bg-emerald-500/30 text-emerald-200'
-                                : project.status === 'paused'
-                                ? 'bg-amber-500/30 text-amber-200'
-                                : 'bg-blue-500/30 text-blue-200'
+                                : project.status === 'completed'
+                                ? 'bg-blue-500/30 text-blue-200'
+                                : 'bg-amber-500/30 text-amber-200'
                             }`}
                           >
-                            {project.status === 'active' ? 'Active' : project.status === 'paused' ? 'Paused' : 'Pending Approval'}
+                            {project.status === 'active'
+                              ? 'Active'
+                              : project.status === 'completed'
+                              ? 'Completed'
+                              : 'Pending Approval'}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 text-white/70 text-sm mb-3">
@@ -480,11 +517,17 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div className="grid grid-cols-4 gap-4 mb-4">
                       <div className="bg-white/5 rounded-lg p-3">
                         <p className="text-white/60 text-xs mb-1">Players Engaged</p>
                         <p className="text-white text-lg font-bold">
                           {project.playerCount.toLocaleString()}
+                        </p>
+                      </div>
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <p className="text-white/60 text-xs mb-1">Trees Target</p>
+                        <p className="text-white text-lg font-bold">
+                          {project.treesTarget.toLocaleString()}
                         </p>
                       </div>
                       <div className="bg-white/5 rounded-lg p-3">
@@ -506,35 +549,26 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
                           <span className="text-sm font-medium">Awaiting Admin Approval</span>
                         </div>
                       ) : (
-                        <>
-                          <button
-                            onClick={() => toggleProjectStatus(project.id)}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                              project.status === 'active'
-                                ? 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/30'
-                                : 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 border border-emerald-500/30'
-                            }`}
-                          >
-                            {project.status === 'active' ? (
-                              <>
-                                <Pause className="w-4 h-4" />
-                                Pause
-                              </>
-                            ) : (
-                              <>
-                                <Play className="w-4 h-4" />
-                                Activate
-                              </>
-                            )}
-                          </button>
-                          <button
-                            onClick={() => deleteProject(project.id)}
-                            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-200 border border-red-500/30 rounded-lg font-medium transition-all"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            Delete
-                          </button>
-                        </>
+                        <button
+                          onClick={() => toggleProjectStatus(project.id)}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                            project.status === 'active'
+                              ? 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 border border-emerald-500/30'
+                              : 'bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 border border-blue-500/30'
+                          }`}
+                        >
+                          {project.status === 'active' ? (
+                            <>
+                              <Pause className="w-4 h-4" />
+                              End Project
+                            </>
+                          ) : (
+                            <>
+                              <Play className="w-4 h-4" />
+                              Reactivate
+                            </>
+                          )}
+                        </button>
                       )}
                     </div>
                   </div>
@@ -633,18 +667,42 @@ export function NGODashboard({ ngoEmail }: NGODashboardProps) {
 
                   <div className="pt-6 border-t border-white/20">
                     <h3 className="text-lg font-semibold text-white mb-3">Account</h3>
-                    <div className="space-y-3">
-                      <button className="w-full px-4 py-2 bg-white/10 hover:bg-white/20 text-white border border-white/30 rounded-lg font-medium transition-all text-left">
-                        Change Password
-                      </button>
-                      <button
-                        onClick={signOut}
-                        className="w-full px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-200 border border-red-500/30 rounded-lg font-medium transition-all text-left"
-                      >
-                        Sign Out
-                      </button>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-white/70 mb-2">
+                          Current Password
+                        </label>
+                        <input
+                          type="password"
+                          placeholder="Enter current password"
+                          className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-white/70 mb-2">
+                          New Password
+                        </label>
+                        <input
+                          type="password"
+                          placeholder="Create a new password"
+                          className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-white/70 mb-2">
+                          Confirm New Password
+                        </label>
+                        <input
+                          type="password"
+                          placeholder="Re-enter new password"
+                          className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                      </div>
                     </div>
                   </div>
+                  <button className="w-full px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-all">
+                    Save Changes
+                  </button>
                 </div>
               </div>
             </div>

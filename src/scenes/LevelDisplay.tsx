@@ -145,13 +145,23 @@ export function LevelDisplay({ selectedTree, selectedCharacter, landId, onBack }
                     src={selectedTree}
                     alt="Growing Tree"
                     className={`object-contain transition-all duration-700 ${
-                      completedLevels.length < 5
-                        ? 'w-20 opacity-50'
-                        : completedLevels.length < 10
-                        ? 'w-32 opacity-60'
-                        : completedLevels.length < 15
-                        ? 'w-48 opacity-80'
-                        : 'w-64 opacity-100'
+                      completedLevels.length === 0
+                        ? 'w-16 opacity-40'
+                        : completedLevels.length === 1
+                        ? 'w-42 opacity-50'
+                        : completedLevels.length === 2
+                        ? 'w-44 opacity-55'
+                        : completedLevels.length < 5
+                        ? 'w-46 opacity-60'
+                        : completedLevels.length < 8
+                        ? 'w-48 opacity-65'
+                        : completedLevels.length < 12
+                        ? 'w-56 opacity-75'
+                        : completedLevels.length < 16
+                        ? 'w-64 opacity-85'
+                        : completedLevels.length < 20
+                        ? 'w-72 opacity-95'
+                        : 'w-80 opacity-100'
                     }`}
                   />
                 </div>
@@ -169,13 +179,22 @@ export function LevelDisplay({ selectedTree, selectedCharacter, landId, onBack }
                   const isCompleted = completedLevels.includes(level);
                   const isCurrent = level === currentLevel;
                   const isLocked = level > currentLevel;
+                  
+                  // Tree emojis for different levels
+                  const getEmoji = () => {
+                    if (level <= 4) return '🌱';
+                    if (level <= 8) return '🌿';
+                    if (level <= 12) return '🪴';
+                    if (level <= 16) return '🌳';
+                    return '🌲';
+                  };
 
                   return (
                     <button
                       key={level}
                       onClick={() => handleLevelClick(level)}
                       disabled={isLocked || isCompleted}
-                      className={`aspect-square rounded-xl font-bold text-lg transition-all ${
+                      className={`aspect-square rounded-xl font-bold text-lg transition-all flex flex-col items-center justify-center ${
                         isCompleted
                           ? 'bg-emerald-500 text-white shadow-lg'
                           : isCurrent
@@ -183,7 +202,14 @@ export function LevelDisplay({ selectedTree, selectedCharacter, landId, onBack }
                           : 'bg-white/20 text-white/50 cursor-not-allowed'
                       } ${!isLocked && !isCompleted ? 'hover:scale-110' : ''}`}
                     >
-                      {isCompleted ? '✓' : level}
+                      {isCompleted ? (
+                        <span className="text-2xl">✓</span>
+                      ) : (
+                        <>
+                          <span className="text-xs">{getEmoji()}</span>
+                          <span>{level}</span>
+                        </>
+                      )}
                     </button>
                   );
                 })}

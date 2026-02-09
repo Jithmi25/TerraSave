@@ -74,7 +74,7 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
           className="absolute inset-0 w-full h-full object-cover brightness-75"
         />
       </div>
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-10">
         <img
           src="/image/1.png"
           alt="Pattern"
@@ -187,7 +187,7 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
           {/* Leaderboard Panel */}
           {showLeaderboard && (
             <div className="mb-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/30">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
                   <Trophy className="w-6 h-6 text-amber-400" />
                   Global Leaderboard
@@ -199,41 +199,77 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
                   Close
                 </button>
               </div>
-              <div className="space-y-2">
-                {leaderboardData.map((player) => (
-                  <div
-                    key={player.rank}
-                    className={`p-4 rounded-xl flex items-center justify-between ${
-                      player.name === user?.email || player.name === 'You'
-                        ? 'bg-emerald-500/20 border border-emerald-500/40'
-                        : 'bg-white/5'
-                    }`}
-                  >
-                    <div className="flex items-center gap-4">
+              <div className="grid grid-cols-2 gap-8">
+                {/* Left Column - Top 5 Leaderboard */}
+                <div>
+                  <h4 className="text-white font-semibold mb-4">Top 5 Players</h4>
+                  <div className="space-y-2">
+                    {leaderboardData.filter(player => player.name !== user?.email && player.name !== 'You').map((player) => (
                       <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                          player.rank === 1
-                            ? 'bg-amber-500 text-white'
-                            : player.rank === 2
-                            ? 'bg-gray-400 text-white'
-                            : player.rank === 3
-                            ? 'bg-orange-600 text-white'
-                            : 'bg-white/20 text-white'
-                        }`}
+                        key={player.rank}
+                        className="p-4 rounded-xl flex items-center justify-between bg-white/5"
                       >
-                        #{player.rank}
+                        <div className="flex items-center gap-4">
+                          <div
+                            className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
+                              player.rank === 1
+                                ? 'bg-amber-500 text-white'
+                                : player.rank === 2
+                                ? 'bg-gray-400 text-white'
+                                : player.rank === 3
+                                ? 'bg-orange-600 text-white'
+                                : 'bg-white/20 text-white'
+                            }`}
+                          >
+                            #{player.rank}
+                          </div>
+                          <div>
+                            <p className="text-white font-semibold text-sm">{player.name}</p>
+                            <p className="text-white/60 text-xs">{player.trees} trees</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-white font-bold">{player.score.toLocaleString()}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-white font-semibold">{player.name}</p>
-                        <p className="text-white/60 text-sm">{player.trees} trees planted</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-emerald-400 font-bold text-lg">{player.score.toLocaleString()}</p>
-                      <p className="text-white/60 text-xs">points</p>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                {/* Right Column - Your Rank & Status */}
+                <div>
+                  <h4 className="text-white font-semibold mb-4">Your Rank & Status</h4>
+                  {leaderboardData.filter(player => player.name === user?.email || player.name === 'You').map((player) => (
+                    <div
+                      key={player.rank}
+                      className="p-6 rounded-xl bg-emerald-500/20 border border-emerald-500/40 space-y-4"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 rounded-full flex items-center justify-center font-bold bg-emerald-500 text-white text-2xl">
+                          #{player.rank}
+                        </div>
+                        <div>
+                          <p className="text-emerald-400 font-semibold text-lg">Your Rank</p>
+                          <p className="text-white/80 text-sm">{player.name}</p>
+                        </div>
+                      </div>
+                      <div className="bg-white/10 rounded-lg p-4 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-white/80">Total Points</span>
+                          <span className="text-emerald-400 font-bold text-xl">{player.score.toLocaleString()}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-white/80">Trees Planted</span>
+                          <span className="text-emerald-400 font-bold text-xl">{player.trees}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-white/80">Status</span>
+                          <span className="text-emerald-400 font-bold text-sm">Active Player</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -241,7 +277,7 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
           {/* Help Panel */}
           {showHelp && (
             <div className="mb-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/30">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
                   <HelpCircle className="w-6 h-6" />
                   How to Play
@@ -253,22 +289,28 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
                   Close
                 </button>
               </div>
-              <div className="space-y-4 text-white/90">
-                <div>
-                  <h4 className="font-semibold text-white mb-2">🌱 Step 1: Choose Your Tree</h4>
-                  <p className="text-sm">Select one of three tree types to start your virtual forest journey.</p>
+              <div className="grid grid-cols-2 gap-8">
+                {/* Column 1 */}
+                <div className="space-y-4 text-white/90">
+                  <div>
+                    <h4 className="font-semibold text-white mb-2">🌱 Step 1: Choose Your Tree</h4>
+                    <p className="text-sm">Select one of three tree types to start your virtual forest journey.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white mb-2">🎮 Step 2: Complete Levels</h4>
+                    <p className="text-sm">Play match-three puzzle games across 20 levels. Each completed level helps your tree grow!</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-2">🎮 Step 2: Complete Levels</h4>
-                  <p className="text-sm">Play match-three puzzle games across 20 levels. Each completed level helps your tree grow!</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-2">🌳 Step 3: Grow Your Forest</h4>
-                  <p className="text-sm">As you progress, your virtual tree grows and becomes part of the TerraSave forest.</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-2">🏆 Step 4: Earn Rewards</h4>
-                  <p className="text-sm">Complete all levels to receive a plant certificate and contribute to real tree planting!</p>
+                {/* Column 2 */}
+                <div className="space-y-4 text-white/90">
+                  <div>
+                    <h4 className="font-semibold text-white mb-2">🌳 Step 3: Grow Your Forest</h4>
+                    <p className="text-sm">As you progress, your virtual tree grows and becomes part of the TerraSave forest.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white mb-2">🏆 Step 4: Earn Rewards</h4>
+                    <p className="text-sm">Complete all levels to receive a plant certificate and contribute to real tree planting!</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -312,7 +354,7 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
           {/* Settings Panel */}
           {showSettings && (
             <div className="mb-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/30">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
                   <Settings className="w-6 h-6" />
                   Settings
@@ -324,62 +366,72 @@ export function CreativeDashboard({ character, onOpenProfile, onContinueJourney 
                   Close
                 </button>
               </div>
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <h4 className="text-white font-semibold">Sound & Audio</h4>
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                    <span className="text-white/90">Music Volume</span>
-                    <input type="range" min="0" max="100" defaultValue="70" className="w-32" />
+              <div className="grid grid-cols-2 gap-8">
+                {/* Column 1 */}
+                <div className="space-y-6">
+                  {/* Sound & Audio */}
+                  <div className="space-y-3">
+                    <h4 className="text-white font-semibold">Sound & Audio</h4>
+                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                      <span className="text-white/90">Music Volume</span>
+                      <input type="range" min="0" max="100" defaultValue="70" className="w-32" />
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                      <span className="text-white/90">Sound Effects</span>
+                      <input type="range" min="0" max="100" defaultValue="80" className="w-32" />
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                    <span className="text-white/90">Sound Effects</span>
-                    <input type="range" min="0" max="100" defaultValue="80" className="w-32" />
-                  </div>
-                </div>
-                
-                <div className="space-y-3">
-                  <h4 className="text-white font-semibold">Display</h4>
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                    <span className="text-white/90">Brightness</span>
-                    <input type="range" min="0" max="100" defaultValue="100" className="w-32" />
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                    <span className="text-white/90">Screen Shake</span>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" defaultChecked className="sr-only peer" />
-                      <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-                    </label>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="text-white font-semibold">Notifications</h4>
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                    <span className="text-white/90">Push Notifications</span>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" defaultChecked className="sr-only peer" />
-                      <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-                    </label>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                    <span className="text-white/90">Email Updates</span>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" defaultChecked className="sr-only peer" />
-                      <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-                    </label>
+                  
+                  {/* Display */}
+                  <div className="space-y-3">
+                    <h4 className="text-white font-semibold">Display</h4>
+                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                      <span className="text-white/90">Brightness</span>
+                      <input type="range" min="0" max="100" defaultValue="100" className="w-32" />
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                      <span className="text-white/90">Screen Shake</span>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                      </label>
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <h4 className="text-white font-semibold">Language</h4>
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                    <span className="text-white/90">Select Language</span>
-                    <select className="bg-white/10 text-white px-4 py-2 rounded-lg border border-white/30">
-                      <option value="en">English</option>
-                      <option value="es">Español</option>
-                      <option value="fr">Français</option>
-                      <option value="de">Deutsch</option>
-                    </select>
+                {/* Column 2 */}
+                <div className="space-y-6">
+                  {/* Notifications */}
+                  <div className="space-y-3">
+                    <h4 className="text-white font-semibold">Notifications</h4>
+                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                      <span className="text-white/90">Push Notifications</span>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                      <span className="text-white/90">Email Updates</span>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Language */}
+                  <div className="space-y-3">
+                    <h4 className="text-white font-semibold">Language</h4>
+                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                      <span className="text-white/90">Select Language</span>
+                      <select className="bg-white/10 text-white px-4 py-2 rounded-lg border border-white/30">
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
