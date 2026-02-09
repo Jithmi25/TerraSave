@@ -70,11 +70,87 @@ To empower people to take small eco-friendly actions that collectively create a 
 
 ## 🛠️ Tech Stack
 
-- Frontend: HTML, CSS, JavaScript / React
-- Backend: Node.js / PHP
-- Database: MySQL / MongoDB
-- AI: OpenAI / Custom ML models
-- Hosting: Cloud-based services
+- **Frontend:** React 18 with TypeScript
+- **Styling:** Tailwind CSS 4
+- **Authentication:** Supabase Auth
+- **Backend:** Supabase (PostgreSQL)
+- **Icons:** Lucide React
+- **Build Tool:** React Scripts
+
+---
+
+## 📦 Installation & Setup
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+- Supabase account (for authentication and database)
+
+### Installation Steps
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd TerraSave
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Configure Supabase**
+   - Copy `.env.example` to `.env`
+   - Add your Supabase credentials:
+     ```
+     REACT_APP_SUPABASE_URL=your_supabase_url_here
+     REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+     ```
+
+4. **Run the development server**
+
+   ```bash
+   npm start
+   ```
+
+5. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 📁 Project Structure
+
+```
+TerraSave/
+├── public/
+│   ├── index.html
+│   └── image/
+│       └── logo.png
+├── src/
+│   ├── app.tsx              # Main App component
+│   ├── index.tsx            # Entry point
+│   ├── index.css            # Global styles
+│   ├── components/
+│   │   ├── AuthContext.tsx  # Authentication context
+│   │   └── index.ts
+│   ├── lib/
+│   │   └── supabase.ts      # Supabase client config
+│   ├── scenes/
+│   │   ├── SignIn.tsx       # Sign in page
+│   │   └── SignUp.tsx       # Sign up page
+│   └── types/
+│       └── index.ts         # TypeScript type definitions
+├── .env                     # Environment variables (not in git)
+├── .env.example             # Environment template
+├── package.json
+├── tsconfig.json
+└── README.md
+```
 
 ---
 
