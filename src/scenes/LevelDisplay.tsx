@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
 import { GameLevel1 } from './GameLevel1';
 
 interface LevelDisplayProps {
@@ -11,6 +12,7 @@ export function LevelDisplay({ selectedTree, landId, onBack }: LevelDisplayProps
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [playingLevel, setPlayingLevel] = useState<number | null>(null);
+  const [quietMode, setQuietMode] = useState(false);
   const totalLevels = 20;
 
   const handleLevelClick = (level: number) => {
@@ -24,6 +26,7 @@ export function LevelDisplay({ selectedTree, landId, onBack }: LevelDisplayProps
   if (playingLevel === 1) {
     return (
       <GameLevel1
+        quietMode={quietMode}
         onLevelComplete={() => {
           setCompletedLevels([...completedLevels, 1]);
           if (1 < totalLevels) {
@@ -31,6 +34,7 @@ export function LevelDisplay({ selectedTree, landId, onBack }: LevelDisplayProps
           }
           setPlayingLevel(null);
         }}
+        onBack={() => setPlayingLevel(null)}
       />
     );
   }
@@ -42,10 +46,10 @@ export function LevelDisplay({ selectedTree, landId, onBack }: LevelDisplayProps
         <img
           src="/image/bg.jpg"
           alt="Background"
-          className="absolute inset-0 w-full h-full object-cover brightness-75"
+          className="absolute inset-0 w-full h-full object-cover brightness-50"
         />
       </div>
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-10">
         <img
           src="/image/1.png"
           alt="Pattern"
@@ -63,12 +67,34 @@ export function LevelDisplay({ selectedTree, landId, onBack }: LevelDisplayProps
                 Complete all {totalLevels} levels to grow your tree
               </p>
             </div>
-            <button
-              onClick={onBack}
-              className="px-4 py-2 rounded-full bg-white/20 text-white backdrop-blur-md border border-white/30 hover:bg-white/30 transition"
-            >
-              Back
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setQuietMode(!quietMode)}
+                className={`px-4 py-2 rounded-full backdrop-blur-md border transition flex items-center gap-2 ${
+                  quietMode
+                    ? 'bg-amber-500/30 text-amber-200 border-amber-500/50 hover:bg-amber-500/40'
+                    : 'bg-white/20 text-white border-white/30 hover:bg-white/30'
+                }`}
+              >
+                {quietMode ? (
+                  <>
+                    <VolumeX className="w-5 h-5" />
+                    Quiet Mode
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-5 h-5" />
+                    Sound On
+                  </>
+                )}
+              </button>
+              <button
+                onClick={onBack}
+                className="px-4 py-2 rounded-full bg-white/20 text-white backdrop-blur-md border border-white/30 hover:bg-white/30 transition"
+              >
+                Back
+              </button>
+            </div>
           </div>
 
           {/* Progress Bar */}

@@ -7,6 +7,8 @@ import { CreativeDashboard } from './scenes/CreativeDashboard';
 import { Profile } from './scenes/Profile';
 import { LandSelection } from './scenes/LandSelection';
 import { LevelDisplay } from './scenes/LevelDisplay';
+import { NGODashboard } from './scenes/NGODashboard';
+import { AdminDashboard } from './scenes/AdminDashboard';
 import { Loader2 } from 'lucide-react';
 
 function AppContent() {
@@ -36,6 +38,17 @@ function AppContent() {
     );
   }
 
+  // Route to NGO dashboard
+  if (user.userType === 'ngo') {
+    return <NGODashboard ngoEmail={user.email} />;
+  }
+
+  // Route to Admin dashboard
+  if (user.userType === 'admin') {
+    return <AdminDashboard adminEmail={user.email} />;
+  }
+
+  // Player flow (original flow)
   if (!selectedCharacter) {
     return <CharacterSelect onPlay={(character) => setSelectedCharacter(character)} />;
   }

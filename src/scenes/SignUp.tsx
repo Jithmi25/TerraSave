@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { AlertCircle, Loader2 } from 'lucide-react';
-import { useAuth } from '../components/AuthContext';
+import { useAuth, type UserType } from '../components/AuthContext';
 
 export function SignUp({ onSwitchToSignIn }: { onSwitchToSignIn: () => void }) {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [userType, setUserType] = useState<UserType>('player');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
@@ -37,7 +38,7 @@ export function SignUp({ onSwitchToSignIn }: { onSwitchToSignIn: () => void }) {
 
     setLoading(true);
     try {
-      await signUp(email, password, fullName);
+      await signUp(email, password, fullName, userType);
       setFullName('');
       setEmail('');
       setPassword('');
@@ -62,6 +63,28 @@ export function SignUp({ onSwitchToSignIn }: { onSwitchToSignIn: () => void }) {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                I am a...
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {(['player', 'ngo'] as const).map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => setUserType(type)}
+                    className={`py-2 px-3 rounded-lg font-medium transition-all border-2 ${
+                      userType === type
+                        ? 'border-emerald-600 bg-emerald-50 text-emerald-700'
+                        : 'border-gray-300 bg-white text-gray-700 hover:border-emerald-300'
+                    }`}
+                  >
+                    {type === 'player' ? '🌱 Player' : '🏢 NGO'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Full Name

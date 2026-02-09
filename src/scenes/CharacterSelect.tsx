@@ -111,7 +111,7 @@ export function CharacterSelect({ onPlay }: CharacterSelectProps) {
           </div>
 
           {/* Character Selection */}
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="grid md:grid-cols-2 gap-6 mb-8 max-w-2xl mx-auto">
             {/* Boy Character */}
             <button
               onClick={() => setSelectedCharacter('boy')}
@@ -119,7 +119,7 @@ export function CharacterSelect({ onPlay }: CharacterSelectProps) {
                 selectedCharacter === 'boy' ? 'scale-105' : ''
               }`}
             >
-              <div className={`bg-white/10 backdrop-blur-md rounded-3xl p-8 border-4 transition-all ${
+              <div className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 border-4 transition-all ${
                 selectedCharacter === 'boy' 
                   ? 'border-emerald-400 shadow-2xl shadow-emerald-500/50' 
                   : 'border-white/30 hover:border-white/50'
@@ -138,10 +138,10 @@ export function CharacterSelect({ onPlay }: CharacterSelectProps) {
                     </div>
                   )}
                 </div>
-                <h3 className="text-2xl font-bold text-white mt-6 drop-shadow-lg">
+                <h3 className="text-lg font-bold text-white mt-3 drop-shadow-lg">
                   Forest Guardian Boy
                 </h3>
-                <p className="text-white/80 mt-2">
+                <p className="text-white/80 text-sm mt-1">
                   Brave and adventurous explorer
                 </p>
               </div>
@@ -154,7 +154,7 @@ export function CharacterSelect({ onPlay }: CharacterSelectProps) {
                 selectedCharacter === 'girl' ? 'scale-105' : ''
               }`}
             >
-              <div className={`bg-white/10 backdrop-blur-md rounded-3xl p-8 border-4 transition-all ${
+              <div className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 border-4 transition-all ${
                 selectedCharacter === 'girl' 
                   ? 'border-emerald-400 shadow-2xl shadow-emerald-500/50' 
                   : 'border-white/30 hover:border-white/50'
@@ -173,10 +173,10 @@ export function CharacterSelect({ onPlay }: CharacterSelectProps) {
                     </div>
                   )}
                 </div>
-                <h3 className="text-2xl font-bold text-white mt-6 drop-shadow-lg">
+                <h3 className="text-lg font-bold text-white mt-3 drop-shadow-lg">
                   Forest Guardian Girl
                 </h3>
-                <p className="text-white/80 mt-2">
+                <p className="text-white/80 text-sm mt-1">
                   Wise and nature-loving protector
                 </p>
               </div>

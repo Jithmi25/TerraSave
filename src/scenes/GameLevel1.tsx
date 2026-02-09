@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
 
 interface GameLevel1Props {
   onLevelComplete: () => void;
+  quietMode?: boolean;
+  onBack?: () => void;
 }
 
 type Plant = '🌱' | '🌿' | '🍀' | '🌾' | '🌳' | null;
@@ -18,7 +21,7 @@ const formatTime = (seconds: number) => {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
 
-export function GameLevel1({ onLevelComplete }: GameLevel1Props) {
+export function GameLevel1({ onLevelComplete, quietMode = false, onBack }: GameLevel1Props) {
   const [grid, setGrid] = useState<Plant[][]>([]);
   const [selectedCell, setSelectedCell] = useState<[number, number] | null>(null);
   const [score, setScore] = useState(0);
@@ -27,7 +30,7 @@ export function GameLevel1({ onLevelComplete }: GameLevel1Props) {
   const [gameOver, setGameOver] = useState(false);
   const [won, setWon] = useState(false);
   const [timeUp, setTimeUp] = useState(false);
-  const [isQuiet, setIsQuiet] = useState(false);
+  const [isQuiet, setIsQuiet] = useState(quietMode);
 
   // Initialize grid
   useEffect(() => {
@@ -212,7 +215,7 @@ export function GameLevel1({ onLevelComplete }: GameLevel1Props) {
         <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
           <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/30 max-w-md w-full text-center">
             {timeUp ? (
-              <img src="/image/win.png" alt="Time Up" className="w-28 h-28 mx-auto mb-4" />
+              <img src="/image/mascot_girl.png" alt="Time Up" className="w-32 h-32 mx-auto mb-4" />
             ) : (
               <div className="text-6xl mb-4">{passed ? '🎉' : '🌱'}</div>
             )}
@@ -276,14 +279,21 @@ export function GameLevel1({ onLevelComplete }: GameLevel1Props) {
             <p className="text-white/80">Level 1: Plant Alignment Challenge</p>
             <div className="mt-4 flex items-center justify-center gap-3">
               <button
-                onClick={() => setIsQuiet((q) => !q)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${
-                  isQuiet
-                    ? 'bg-emerald-500/30 border-emerald-400 text-emerald-100'
-                    : 'bg-white/10 border-white/30 text-white/80 hover:bg-white/20'
+                onClick={() => setIsQuiet(false)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border flex items-center gap-2 ${
+                  !isQuiet
+                    ? 'bg-white/20 border-white/40 text-white'
+                    : 'bg-white/10 border-white/30 text-white/60 hover:bg-white/15'
                 }`}
               >
-                {isQuiet ? 'Quiet Mode: On' : 'Quiet Mode: Off'}
+                <Volume2 className="w-4 h-4" />
+                Sound On
+              </button>
+              <button
+                onClick={onBack}
+                className="px-4 py-2 rounded-full text-sm font-semibold transition-all border bg-white/10 border-white/30 text-white/60 hover:bg-white/15"
+              >
+                Quiet Game
               </button>
             </div>
           </div>
